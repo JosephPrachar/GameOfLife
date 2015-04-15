@@ -7,27 +7,26 @@ namespace GameOfLife
 {
     class Board
     {
-        private int[][] boardOne;
-        private int[][] boardTwo;
+        private byte[][] boardOne;
+        private byte[][] boardTwo;
         private bool curBoardIsOne = true;
 
         private int width;
         private int height;
 
-        public Board(int[][] startingState)
+        public Board(byte[][] startingState)
         {
             boardOne = startingState;
             width = boardOne[0].Length;
             height = boardOne.Length;
 
-            boardTwo = new int[height][];
+            boardTwo = new byte[height][];
             for (int i = 0; i < height; i++)
             {
-                boardTwo[i] = new int[width];
+                boardTwo[i] = new byte[width];
                 for (int j = 0; j < width; j++)
                     boardTwo[i][j] = 0;
             }
-
         }
 
         public int Width
@@ -39,33 +38,30 @@ namespace GameOfLife
             get { return height; }
         }
 
-        public int GetCell(int x, int y)
+        public byte GetCell(int x, int y)
         {
             return GetCurrentBoard()[y][x];
         }
 
-        private int[][] GetCurrentBoard()
+        private byte[][] GetCurrentBoard()
         {
-            //return boardOne;
             return curBoardIsOne ? boardOne : boardTwo;
         }
-        private int[][] GetBufferBoard()
+        private byte[][] GetBufferBoard()
         {
-            //return boardTwo;
             return curBoardIsOne ? boardTwo : boardOne;
         }
 
-        // call simulate(x, y) for each cell
         public void Simulate()
         {    
             // set the current array and the one to fill
-            int[][] cur = GetCurrentBoard();
-            int[][] next = GetBufferBoard();
+            byte[][] cur = GetCurrentBoard();
+            byte[][] next = GetBufferBoard();
 
             // compute the status of each cell in cur and put the result in next
             for (int i = 0; i < height; i++)
                 for (int j = 0; j < width; j++)
-                    next[i][j] = IsAlive(j, i, cur) ? cur[i][j] + 1 : 0;
+                    next[i][j] = IsAlive(j, i, cur) ? (byte)(cur[i][j] + 1) : (byte)0;
 
             // clear the board for use as the next buffer
             for (int i = 0; i < height; i++)
@@ -74,15 +70,12 @@ namespace GameOfLife
 
             // flip the current board for next frame
             curBoardIsOne = !curBoardIsOne;
-
-            //Copy(boardTwo, boardOne);
         }
 
-        private bool IsAlive(int x, int y, int[][] board)
+        private bool IsAlive(int x, int y, byte[][] board)
         {
             // computes the life or death of the current board via counting surrounding cells
             int numAlive = GetNumSurrounding(x, y, board);
-
 
              if (board[y][x] == 0) // cell is dead
             {
@@ -100,7 +93,7 @@ namespace GameOfLife
             }
         }
 
-        private int GetNumSurrounding(int x, int y, int[][] board)
+        private int GetNumSurrounding(int x, int y, byte[][] board)
         {
             int toReturn = 0;
             for (int i = y - 1; i <= y + 1; i++)
@@ -112,13 +105,6 @@ namespace GameOfLife
             if (board[y][x] > 0)
                 toReturn--;
             return toReturn;
-        }
-
-        private void Copy(int[][] from, int[][] to)
-        {
-            for (int i = 0; i < height; i++)
-                for (int j = 0; j < width; j++)
-                    to[i][j] = from[i][j];
         }
     }
 }

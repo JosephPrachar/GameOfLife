@@ -10,27 +10,21 @@ namespace GameOfLife
     {
         Board board;
 
-        public Game(int[][] initialState)
+        public Game(byte[][] initialState)
         {
             Random r = new Random();
 
             int height = 10;
             int width = 10;
 
-            initialState = new int[height][];
+            initialState = new byte[height][];
             for (int i = 0; i < height; i++)
             {
-                initialState[i] = new int[width];
+                initialState[i] = new byte[width];
                 for (int j = 0; j < width; j++)
-                    //initialState[i][j] = r.Next(0, 2);
-                    initialState[i][j] = 0;
+                    initialState[i][j] = (byte)r.Next(0, 2);
+
             }
-
-            int[][] a = initialState;
-
-            a[5][2] = 1;
-            a[5][3] = 1;
-            a[5][4] = 1;
 
             board = new Board(initialState);
         }
