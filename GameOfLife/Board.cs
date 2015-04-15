@@ -19,22 +19,35 @@ namespace GameOfLife
 
         }
 
+        public int Width
+        {
+            get { return width; }
+        }
+        public int Height
+        {
+            get { return height; }
+        }
+
+        public int GetCell(int x, int y)
+        {
+            return GetCurrentBoard()[y][x];
+        }
+
+        private int[][] GetCurrentBoard()
+        {
+            return curBoardIsOne ? boardOne : boardTwo;
+        }
+        private int[][] GetBufferBoard()
+        {
+            return curBoardIsOne ? boardTwo : boardOne;
+        }
+
         // call simulate(x, y) for each cell
         public void Simulate()
         {    
             // set the current array and the one to fill
-            int[][] cur = null;
-            int[][] next = null;
-            if (curBoardIsOne)
-            {
-                cur = boardOne;
-                next = boardTwo;
-            }
-            else
-            {
-                cur = boardTwo;
-                next = boardOne;
-            }
+            int[][] cur = GetCurrentBoard();
+            int[][] next = GetBufferBoard();
 
             // compute the status of each cell in cur and put the result in next
             for (int i = 0; i < height; i++)
@@ -75,11 +88,6 @@ namespace GameOfLife
                         if (board[i][j] > 0)
                             toReturn++;
             return toReturn;
-        }
-
-        private void Copy(int[][] from, int[][] to)
-        {
-            
         }
     }
 }
