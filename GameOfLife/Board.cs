@@ -9,26 +9,72 @@ namespace GameOfLife
     {
         private int[][] boardOne;
         private int[][] boardTwo;
-        private byte currentBoard = 0;
+        private bool curBoardIsOne = true;
+
+        private int width;
+        private int height;
 
         public Board(int[][] startingState)
         {
 
         }
 
+        // call simulate(x, y) for each cell
         public void Simulate()
-        {
-            // call simulate(x, y) for each cell
+        {    
+            // set the current array and the one to fill
+            int[][] cur = null;
+            int[][] next = null;
+            if (curBoardIsOne)
+            {
+                cur = boardOne;
+                next = boardTwo;
+            }
+            else
+            {
+                cur = boardTwo;
+                next = boardOne;
+            }
+
+            // compute the status of each cell in cur and put the result in next
+            for (int i = 0; i < height; i++)
+                for (int j = 0; j < width; j++)
+                    next[j][i] = IsAlive(i, j, cur) ? cur[j][i]++ : 0;
+
+            // flip the current board for next frame
+            curBoardIsOne = !curBoardIsOne;
         }
 
-        private void Simulate(int x, int y)
+        private bool IsAlive(int x, int y, int[][] board)
         {
             // computes the life or death of the current board via counting surrounding cells
+            int numAlive = GetNumSurrounding(x, y, board);
+
+            if (board[y][x] == 0) // cell is dead
+            {
+                if (numAlive == 3)
+                    return true;
+                else
+                    return false;
+            }
+            else // cell is alive
+            {
+                if (numAlive != 2 || numAlive != 3)
+                    return false;
+                else
+                    return true;
+            }
         }
 
-        private int[] GetSurrounding(int x, int y)
+        private int GetNumSurrounding(int x, int y, int[][] board)
         {
-            return null;
+            int toReturn = 0;
+            for (int i = y - 1; i <= y + 1; i++)
+                for (int j = x - 1; j <= j + 1; j++)
+                    if (i >= 0 && j >= 0 && i < height && j < width)
+                        if (board[i][j] > 0)
+                            toReturn++;
+            return toReturn;
         }
 
         private void Copy(int[][] from, int[][] to)
