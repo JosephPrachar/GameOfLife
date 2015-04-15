@@ -7,26 +7,18 @@ namespace GameOfLife
 {
     class Board
     {
-        private byte[][] boardOne;
-        private byte[][] boardTwo;
-        private bool curBoardIsOne = true;
+        private List<byte[][]> boards;
 
         private int width;
         private int height;
 
         public Board(byte[][] startingState)
         {
-            boardOne = startingState;
-            width = boardOne[0].Length;
-            height = boardOne.Length;
+            boards = new List<byte[][]>();
+            boards.Add(startingState);
 
-            boardTwo = new byte[height][];
-            for (int i = 0; i < height; i++)
-            {
-                boardTwo[i] = new byte[width];
-                for (int j = 0; j < width; j++)
-                    boardTwo[i][j] = 0;
-            }
+            width = startingState[0].Length;
+            height = startingState.Length;
         }
 
         public int Width
@@ -37,39 +29,37 @@ namespace GameOfLife
         {
             get { return height; }
         }
+        public int NumOfBoards
+        {
+            get { return boards.Count; }
+        }
 
         public byte GetCell(int x, int y)
         {
             return GetCurrentBoard()[y][x];
         }
+        public byte GetCell(int x, int y, int boardIndex)
+        {
+            return boards[boardIndex][y][x];
+        }
 
         private byte[][] GetCurrentBoard()
         {
-            return curBoardIsOne ? boardOne : boardTwo;
-        }
-        private byte[][] GetBufferBoard()
-        {
-            return curBoardIsOne ? boardTwo : boardOne;
+            return boards[boards.Count - 1];
         }
 
         public void Simulate()
         {    
             // set the current array and the one to fill
             byte[][] cur = GetCurrentBoard();
-            byte[][] next = GetBufferBoard();
+            byte[][] next = NewBoard();
 
             // compute the status of each cell in cur and put the result in next
             for (int i = 0; i < height; i++)
                 for (int j = 0; j < width; j++)
                     next[i][j] = IsAlive(j, i, cur) ? (byte)(cur[i][j] + 1) : (byte)0;
 
-            // clear the board for use as the next buffer
-            for (int i = 0; i < height; i++)
-                for (int j = 0; j < width; j++)
-                    cur[i][j] = 0;
-
-            // flip the current board for next frame
-            curBoardIsOne = !curBoardIsOne;
+            boards.Add(next);
         }
 
         private bool IsAlive(int x, int y, byte[][] board)
@@ -104,6 +94,18 @@ namespace GameOfLife
 
             if (board[y][x] > 0)
                 toReturn--;
+            return toReturn;
+        }
+
+        private byte[][] NewBoard()
+        {
+            byte[][] toReturn = new byte[height][];
+            for (int i = 0; i < height; i++)
+            {
+                toReturn[i] = new byte[width];
+                for (int j = 0; j < width; j++)
+                    toReturn[i][j] = 0;
+            }
             return toReturn;
         }
     }

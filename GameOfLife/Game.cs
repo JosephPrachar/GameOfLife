@@ -14,8 +14,8 @@ namespace GameOfLife
         {
             Random r = new Random();
 
-            int height = 10;
-            int width = 10;
+            int height = 100;
+            int width = 100;
 
             initialState = new byte[height][];
             for (int i = 0; i < height; i++)
@@ -23,7 +23,6 @@ namespace GameOfLife
                 initialState[i] = new byte[width];
                 for (int j = 0; j < width; j++)
                     initialState[i][j] = (byte)r.Next(0, 2);
-
             }
 
             board = new Board(initialState);
@@ -43,8 +42,8 @@ namespace GameOfLife
 
             g.Clear(Color.White);
 
-            int cellWidth = 20;
-            int cellHeight = 20;
+            int cellWidth = 10;
+            int cellHeight = 10;
 
             Pen b = new Pen(Color.Black);
             SolidBrush black = new SolidBrush(Color.Black);
