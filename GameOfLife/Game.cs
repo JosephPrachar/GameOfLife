@@ -14,16 +14,23 @@ namespace GameOfLife
         {
             Random r = new Random();
 
-            int height = 20;
-            int width = 20;
+            int height = 10;
+            int width = 10;
 
             initialState = new int[height][];
             for (int i = 0; i < height; i++)
             {
                 initialState[i] = new int[width];
                 for (int j = 0; j < width; j++)
-                    initialState[i][j] = r.Next(0, 2);
+                    //initialState[i][j] = r.Next(0, 2);
+                    initialState[i][j] = 0;
             }
+
+            int[][] a = initialState;
+
+            a[5][2] = 1;
+            a[5][3] = 1;
+            a[5][4] = 1;
 
             board = new Board(initialState);
         }
@@ -40,13 +47,22 @@ namespace GameOfLife
         {
             // draws the board
 
-            int cellWidth = 10;
-            int cellHeight = 10;
+            g.Clear(Color.White);
+
+            int cellWidth = 20;
+            int cellHeight = 20;
 
             Pen b = new Pen(Color.Black);
             SolidBrush black = new SolidBrush(Color.Black);
 
             g.DrawRectangle(b, new Rectangle(offset, new Size(board.Width * cellWidth, board.Height * cellHeight)));
+
+            for (int i = 0; i < board.Height; i++)
+                g.DrawLine(b, offset.X, offset.Y + i * cellHeight, offset.X + board.Width * cellWidth, offset.Y + i * cellHeight);
+            
+            for (int i = 0; i < board.Width; i++)
+                g.DrawLine(b, offset.X + i * cellWidth, offset.Y, offset.X + i * cellWidth, offset.Y + board.Height * cellHeight);
+
 
             for (int i = 0; i < board.Height; i++)
             {
