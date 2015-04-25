@@ -14,8 +14,8 @@ namespace GameOfLife
         {
             Random r = new Random();
 
-            int height = 100;
-            int width = 100;
+            int height = 50;
+            int width = 50;
 
             initialState = new byte[height][];
             for (int i = 0; i < height; i++)
@@ -28,6 +28,11 @@ namespace GameOfLife
             board = new Board(initialState);
         }
 
+        public int GetNumberOfBoards()
+        {
+            return board.NumOfBoards;
+        }
+
         public void RunOne()
         {
             // run one frame of the simulation
@@ -36,7 +41,7 @@ namespace GameOfLife
             // record statistics
         }
 
-        public void DrawBoard(Graphics g, Point offset)
+        public void DrawBoard(Graphics g, Point offset, int boardNumber)
         {
             // draws the board
 
@@ -61,7 +66,7 @@ namespace GameOfLife
             {
                 for (int j = 0; j < board.Width; j++)
                 {
-                    if (board.GetCell(j, i) > 0)
+                    if (board.GetCell(j, i, boardNumber) > 0)
                     {
                         g.FillRectangle(black, new Rectangle(
                             j * cellWidth + offset.X, i * cellHeight + offset.Y, cellWidth, cellHeight));

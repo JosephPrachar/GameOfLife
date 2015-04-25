@@ -28,13 +28,26 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.sbHistory = new System.Windows.Forms.HScrollBar();
             this.SuspendLayout();
+            // 
+            // sbHistory
+            // 
+            this.sbHistory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.sbHistory.Location = new System.Drawing.Point(9, 9);
+            this.sbHistory.Name = "sbHistory";
+            this.sbHistory.Size = new System.Drawing.Size(765, 17);
+            this.sbHistory.TabIndex = 0;
+            this.sbHistory.ValueChanged += new System.EventHandler(this.sbHistory_ValueChanged);
+            this.sbHistory.KeyDown += new System.Windows.Forms.KeyEventHandler(this.sbHistory_KeyDown);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(783, 644);
+            this.Controls.Add(this.sbHistory);
             this.DoubleBuffered = true;
             this.Name = "Form1";
             this.Text = "Form1";
@@ -45,6 +58,8 @@
         }
 
         #endregion
+
+        private System.Windows.Forms.HScrollBar sbHistory;
     }
 }
 
