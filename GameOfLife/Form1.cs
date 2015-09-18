@@ -9,11 +9,11 @@ using System.Windows.Forms;
 
 namespace GameOfLife
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         Game game;
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
             sbHistory.Minimum = 0;
